@@ -1,9 +1,9 @@
 # modbusclient
 modbusclient is a simple Modbus TCP client based on [Modbus Application Protocol Specification V1.1b3](https://www.modbus.org/docs/Modbus_Application_Protocol_V1_1b3.pdf)
 
-# Supported Functions
+# Supported Modbus Functions
 
-- **Read (0x03):** Reads data from the Holding Registers of a Modbus TCP device. 
+- Read Holding Registers (0x03)
 
 # Supported Data Types
 
@@ -50,7 +50,7 @@ go get -u github.com/ermanimer/modbusclient
 
 - **Close() error:** Close closes the underlying TCP connection. Returns a modbusclient.ErrNotconnected if the client is not connected to the server.
 
-# Example Application
+# Sample Application
 
 The sample application demonstrates reading a sample value from a Modbus device with constant intervals. 
 
