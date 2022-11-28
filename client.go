@@ -26,7 +26,7 @@ const (
 	excCodeIndex          = 8
 )
 
-// Client defines the behaviors of a Modbus TCP Client.
+// Client defines the behaviors of a Modbus TCP client.
 type Client interface {
 	// Connect uses net.DialTimeout to establish an underlying TCP connection with the Modbus TCP server.
 	Connect() error
