@@ -67,7 +67,7 @@ import (
 
 // configurations
 const (
-	addr             = "192.168.0.1:502" // address of the device
+	address          = "192.168.0.1:502" // address of the device
 	connTimeout      = 5 * time.Second   // connection timeout
 	unitID           = 0                 // unit id of the device
 	startingAddresss = 0                 // starting address
@@ -78,7 +78,7 @@ var byteOrder = binary.BigEndian // byte order of the Modbus TCP server
 
 func main() {
 	// create client
-	client := modbusclient.NewClient(addr, connTimeout, byteOrder)
+	client := modbusclient.NewClient(address, connTimeout, byteOrder)
 
 	// connect
 	err := client.Connect()
