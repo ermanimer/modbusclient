@@ -72,7 +72,6 @@ const (
 	unitID           = 0                 // unit id of the device
 	startingAddresss = 0                 // starting address
 	registerCount    = 2                 // register count
-
 )
 
 var byteOrder = binary.BigEndian // byte order of the Modbus TCP server
