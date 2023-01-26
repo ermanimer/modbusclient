@@ -69,7 +69,6 @@ import (
 const (
 	addr             = "192.168.0.1:502" // address of the device
 	connTimeout      = 5 * time.Second   // connection timeout
-	readingInterval  = 1 * time.Second   // reading interval
 	unitID           = 0                 // unit id of the device
 	startingAddresss = 0                 // starting address
 	registerCount    = 2                 // register count
