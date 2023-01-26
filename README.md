@@ -58,11 +58,8 @@ The sample application demonstrates reading a sample value from a Modbus device 
 package main
 
 import (
-	"context"
 	"encoding/binary"
 	"log"
-	"os/signal"
-	"syscall"
 	"time"
 
 	"github.com/ermanimer/modbusclient"
@@ -76,59 +73,49 @@ const (
 	unitID           = 0                 // unit id of the device
 	startingAddresss = 0                 // starting address
 	registerCount    = 2                 // register count
+
 )
 
 var byteOrder = binary.BigEndian // byte order of the Modbus TCP server
 
 func main() {
-	ctx, canceFunc := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
-	defer canceFunc()
-
-	ticker := time.NewTicker(readingInterval)
+	// create client
 	client := modbusclient.NewClient(addr, connTimeout, byteOrder)
-	var isConnected bool
-	buf := make([]byte, 256)
-	for {
-		select {
-		case <-ctx.Done():
-			log.Print(ctx.Err())
-			return
-		case <-ticker.C:
-			// connect
-			if !isConnected {
-				log.Print("connecting...")
-				if err := client.Connect(); err != nil {
-					log.Print(err)
-					continue
-				}
-				isConnected = true
-				log.Print("connected")
-			}
 
-			// read
-			n, err := client.Read(buf, unitID, startingAddresss, registerCount)
-			if err != nil {
-				client.Close()
-				isConnected = false
-				log.Print(err)
-				continue
-			}
-			payload := buf[:n]
-
-			// check Modbus read error
-			if err := client.ReadErr(payload); err != nil {
-				log.Print(err)
-				continue
-			}
-
-			// parse value
-			value, err := client.Float32(payload, 0)
-			if err != nil {
-				log.Print(err)
-				continue
-			}
-			log.Printf("value: %v", value)
-		}
+	// connect
+	err := client.Connect()
+	if err != nil {
+		log.Print(err)
+		return
 	}
+	defer func() {
+		err := client.Close()
+		if err != nil {
+			log.Print(err)
+		}
+	}()
+
+	// read
+	buf := make([]byte, 256)
+	n, err := client.Read(buf, unitID, startingAddresss, registerCount)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	response := buf[:n]
+
+	// check read error
+	if err := client.ReadErr(response); err != nil {
+		log.Print(err)
+		return
+	}
+
+	// parse value
+	value, err := client.Float32(response, 0)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	log.Printf("value: %.2f\n", value)
 }
 ```
