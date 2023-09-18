@@ -52,7 +52,7 @@ go get -u github.com/ermanimer/modbusclient
 
 # Sample Application
 
-The sample application demonstrates reading a sample value from a Modbus device with constant intervals. 
+The sample application demonstrates reading a sample value from a Modbus device. 
 
 ```go
 package main
